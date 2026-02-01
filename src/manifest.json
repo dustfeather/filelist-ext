@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "FileList Monitor",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Track TV series on filelist.io and get notified of new torrents.",
     "permissions": [
         "storage",
