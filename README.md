@@ -2,6 +2,8 @@
 
 Browser extension (Chrome & Firefox) that tracks TV series on [filelist.io](https://filelist.io) and sends desktop notifications when new torrents appear.
 
+![FileList Monitor](filelist-monitor.png)
+
 ## How it works
 
 1. Add series names you want to track (e.g. "Snowpiercer S04")
