@@ -1,10 +1,17 @@
 {
     "manifest_version": 3,
     "name": "FileList Monitor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Track TV series on filelist.io and get notified of new torrents.",
-    "permissions": ["storage", "alarms", "notifications", "cookies"],
-    "host_permissions": ["https://filelist.io/*"],
+    "permissions": [
+        "storage",
+        "alarms",
+        "notifications",
+        "cookies"
+    ],
+    "host_permissions": [
+        "https://filelist.io/*"
+    ],
     "background": {
         "service_worker": "src/background/service-worker.ts",
         "type": "module"
