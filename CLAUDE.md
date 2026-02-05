@@ -16,16 +16,16 @@ Load `dist/` as an unpacked extension in Chrome or temporary add-on in Firefox.
 
 Chrome/Firefox MV3 extension that monitors filelist.io for tracked TV series via the JSON API and sends browser notifications for new results.
 
-**Data flow:** Popup stores series names in `chrome.storage.local` → service worker polls filelist.io API (`search-torrents`) per series on alarm interval → deduplicates via stored torrent IDs with timestamps → fires notifications. Series with no new results for 30 days are auto-removed.
+**Data flow:** Popup stores series names (max 150) in `chrome.storage.local` → service worker incrementally polls filelist.io API (`search-torrents`) in batches over a 1-hour cycle → deduplicates via stored torrent IDs with timestamps → fires notifications. Series with no new results for 30 days are auto-removed.
 
-**API rate limit:** 150 requests/hour. The alarm interval auto-adjusts based on series count to stay within limits.
+**API rate limit:** 150 requests/hour. The service worker uses a 1-minute alarm and spreads polls across a 60-minute cycle (`batchSize = ceil(N/60)`), supporting up to 150 series. A `pollCursor` and `nextCycleAt` timestamp in storage track cycle progress across service worker restarts. The popup "Poll Now" button triggers a full immediate poll of all series.
 
 ### Key modules
 
-- **`src/background/service-worker.ts`** — Alarm-based API polling, credential auto-discovery from filelist.io/my.php, strict mode filtering, notification dispatch. Listens for `poll-now` and `update-alarm` messages from popup.
+- **`src/background/service-worker.ts`** — Incremental batch polling (`pollTick`) on a 1-minute alarm, full immediate poll (`poll`) on manual trigger, credential auto-discovery from filelist.io/my.php, strict mode filtering, notification dispatch. Listens for `poll-now` message from popup.
 - **`src/storage.ts`** — Typed wrapper around `chrome.storage.local` with default values. All storage access goes through this module. `seenTorrents` stores `Record<string, Record<string, number>>` (series → torrent ID → timestamp).
 - **`src/types.ts`** — Shared interfaces: `Series`, `TorrentResult`, `Settings`, `StorageData`.
-- **`src/popup/`** — Dark glassmorphism UI built with Tailwind CSS. Manages series list (add/edit/remove/strict toggle/search link), credential config, poll interval.
+- **`src/popup/`** — Dark glassmorphism UI built with Tailwind CSS. Manages series list (add/edit/remove/strict toggle/search link, max 150 entries) and credential config.
 
 ### Build system
 
