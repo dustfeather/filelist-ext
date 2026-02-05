@@ -12,7 +12,6 @@ export interface TorrentResult {
 }
 
 export interface Settings {
-    pollIntervalMinutes: number;
     passkey: string;
     username: string;
 }
@@ -22,4 +21,6 @@ export interface StorageData {
     seenTorrents: Record<string, Record<string, number>>;
     settings: Settings;
     lastCheck: number;
+    pollCursor: number;
+    nextCycleAt: number;
 }

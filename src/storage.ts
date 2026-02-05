@@ -3,8 +3,10 @@ import { Series, Settings, StorageData } from "./types";
 const DEFAULTS: StorageData = {
     series: [],
     seenTorrents: {},
-    settings: { pollIntervalMinutes: 10, passkey: "", username: "" },
+    settings: { passkey: "", username: "" },
     lastCheck: 0,
+    pollCursor: 0,
+    nextCycleAt: 0,
 };
 
 async function get<K extends keyof StorageData>(key: K): Promise<StorageData[K]> {
@@ -28,4 +30,10 @@ export const storage = {
 
     getLastCheck: () => get("lastCheck"),
     setLastCheck: (v: number) => set("lastCheck", v),
+
+    getPollCursor: () => get("pollCursor"),
+    setPollCursor: (v: number) => set("pollCursor", v),
+
+    getNextCycleAt: () => get("nextCycleAt"),
+    setNextCycleAt: (v: number) => set("nextCycleAt", v),
 };

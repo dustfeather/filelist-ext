@@ -8,7 +8,6 @@ const emptyEl = document.getElementById("empty-state") as HTMLDivElement;
 const usernameInput = document.getElementById("username-input") as HTMLInputElement;
 const passkeyInput = document.getElementById("passkey-input") as HTMLInputElement;
 const saveCredsBtn = document.getElementById("save-creds") as HTMLButtonElement;
-const pollSelect = document.getElementById("poll-interval") as HTMLSelectElement;
 const strictToggle = document.getElementById("strict-toggle") as HTMLButtonElement;
 const lastCheckEl = document.getElementById("last-check") as HTMLSpanElement;
 const statusDot = document.getElementById("status-dot") as HTMLSpanElement;
@@ -23,9 +22,17 @@ strictToggle.addEventListener("click", () => {
     strictToggle.classList.toggle("border-surface-border", !addStrict);
 });
 
+function updateFormState(count: number) {
+    const atLimit = count >= MAX_SERIES;
+    input.disabled = atLimit;
+    addBtn.disabled = atLimit;
+    input.placeholder = atLimit ? `Limit reached (${MAX_SERIES})` : "Series name...";
+}
+
 async function renderSeries(series: Series[]) {
     listEl.innerHTML = "";
     emptyEl.classList.toggle("hidden", series.length > 0);
+    updateFormState(series.length);
     const seen = await storage.getSeenTorrents();
     for (const s of series) {
         const key = s.name.toLowerCase();
@@ -84,11 +91,14 @@ function escapeHtml(s: string) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+const MAX_SERIES = 150;
+
 async function addSeries() {
     const name = input.value.trim();
     if (!name) return;
     const series = await storage.getSeries();
     if (series.some((s) => s.name.toLowerCase() === name.toLowerCase())) return;
+    if (series.length >= MAX_SERIES) return;
     series.push({ name, addedAt: Date.now(), strict: addStrict });
     await storage.setSeries(series);
     input.value = "";
@@ -140,8 +150,6 @@ async function init() {
     const settings = await storage.getSettings();
     usernameInput.value = settings.username;
     passkeyInput.value = settings.passkey;
-    pollSelect.value = String(settings.pollIntervalMinutes);
-
     updateLastCheck();
 }
 
@@ -154,13 +162,6 @@ saveCredsBtn.addEventListener("click", async () => {
     settings.passkey = passkeyInput.value.trim();
     await storage.setSettings(settings);
     chrome.runtime.sendMessage({ type: "poll-now" });
-});
-
-pollSelect.addEventListener("change", async () => {
-    const settings = await storage.getSettings();
-    settings.pollIntervalMinutes = Number(pollSelect.value);
-    await storage.setSettings(settings);
-    chrome.runtime.sendMessage({ type: "update-alarm" });
 });
 
 init();
