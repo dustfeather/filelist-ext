@@ -785,8 +785,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  undici@7.19.2:
-    resolution: {integrity: sha512-4VQSpGEGsWzk0VYxyB/wVX/Q7qf9t5znLRgs0dzszr9w9Fej/8RVNQ+S20vdXSAyra/bJ7ZQfGv6ZMj7UEbzSg==}
+  undici@7.24.1:
+    resolution: {integrity: sha512-5xoBibbmnjlcR3jdqtY2Lnx7WbrD/tHlT01TmvqZUFVc9Q1w4+j5hbnapTqbcXITMH1ovjq/W7BkqBilHiVAaA==}
     engines: {node: '>=20.18.1'}
 
   universalify@2.0.1:
@@ -1171,7 +1171,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 7.19.2
+      undici: 7.24.1
       whatwg-mimetype: 4.0.0
 
   convert-source-map@1.9.0: {}
@@ -1488,7 +1488,7 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  undici@7.19.2: {}
+  undici@7.24.1: {}
 
   universalify@2.0.1: {}
 
