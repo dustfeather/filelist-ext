@@ -18,6 +18,9 @@
     "pnpm": {
         "onlyBuiltDependencies": [
             "esbuild"
-        ]
+        ],
+        "overrides": {
+            "rollup@>=2 <2.80": ">=2.80.0"
+        }
     }
 }
