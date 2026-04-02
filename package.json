@@ -12,7 +12,7 @@
         "@tailwindcss/vite": "^4.2.1",
         "@types/chrome": "^0.1.38",
         "tailwindcss": "^4.2.1",
-        "typescript": "^5.7.2",
+        "typescript": "^6.0.2",
         "vite": "^7.3.1"
     },
     "pnpm": {
