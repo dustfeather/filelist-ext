@@ -13,7 +13,7 @@
         "@types/chrome": "^0.1.38",
         "tailwindcss": "^4.2.1",
         "typescript": "^5.7.2",
-        "vite": "^7.3.1"
+        "vite": "^8.0.5"
     },
     "pnpm": {
         "onlyBuiltDependencies": [
