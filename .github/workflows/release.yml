@@ -199,7 +199,7 @@ jobs:
                     "
                   }
 
-                  # Retry wrapper for 429 rate limits (up to 3 attempts)
+                  # Retry wrapper for 429 rate limits (up to 3 attempts, max 120s wait)
                   amo_curl() {
                     for attempt in 1 2 3; do
                       JWT=$(generate_jwt)
@@ -207,6 +207,11 @@ jobs:
                       HTTP_CODE=$(echo "$RESPONSE" | tail -1)
                       if [ "$HTTP_CODE" = "429" ]; then
                         RETRY_AFTER=$(echo "$RESPONSE" | sed '$d' | jq -r '.retry_after // 30')
+                        if [ "$RETRY_AFTER" -gt 120 ] 2>/dev/null; then
+                          echo "Rate limited (429) but retry_after=${RETRY_AFTER}s exceeds 120s cap, giving up"
+                          echo "$RESPONSE"
+                          return 1
+                        fi
                         echo "Rate limited (429), retrying in ${RETRY_AFTER}s (attempt $attempt/3)"
                         sleep "$RETRY_AFTER"
                       else
