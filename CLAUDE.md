@@ -39,7 +39,7 @@ Vite + `@crxjs/vite-plugin` handles manifest processing and extension bundling. 
 ## CI/CD
 
 - **build.yml** — Runs on push/PR to main. Builds and uploads artifact.
-- **release.yml** — Runs on push to main. Auto-bumps patch version in `package.json` + `src/manifest.json`, commits with `[skip ci]`, tags, and creates a GitHub Release with `.zip` (Chrome) and `.xpi` (Firefox) assets.
+- **release.yml** — Runs on push to main. Derives the next patch version from the latest git tag, injects it into `src/manifest.json` at build time (no commit back to repo), tags, and creates a GitHub Release with `.zip` (Chrome) and `.xpi` (Firefox) assets. The version in `package.json` and `src/manifest.json` on disk is a dev placeholder — the release version comes from git tags.
 
 ## Style
 
