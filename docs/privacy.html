@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - FileList Monitor</title>
+    <meta name="description" content="Privacy policy for the FileList Monitor browser extension.">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0b0e17;
+            --surface: #141825;
+            --surface-2: #1c2133;
+            --border: #2a3045;
+            --text: #e2e8f0;
+            --text-muted: #8892a8;
+            --accent: #6366f1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .back:hover { color: var(--text); text-decoration: none; }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p, li { font-size: 0.95rem; }
+
+        p + p { margin-top: 0.75rem; }
+
+        ul, ol {
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        li { margin-bottom: 0.35rem; }
+
+        strong { font-weight: 600; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td:first-child {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        code {
+            background: var(--surface);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        em {
+            color: var(--text-muted);
+            font-style: normal;
+            font-size: 0.85rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        footer a { color: var(--text-muted); }
+        footer a:hover { color: var(--text); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="./" class="back">&larr; Back to home</a>
+
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">FileList Monitor browser extension</p>
+
+    <h2>Data collected</h2>
+    <p>The extension stores the following data <strong>locally in your browser</strong> via <code>chrome.storage.local</code>:</p>
+    <ul>
+        <li>Series names you add for tracking</li>
+        <li>Your filelist.io username and passkey (entered manually or auto-discovered from your active session)</li>
+        <li>IDs and timestamps of previously seen torrents (used for deduplication)</li>
+        <li>Your polling interval preference</li>
+    </ul>
+
+    <h2>How data is used</h2>
+    <ul>
+        <li><strong>Series names</strong> are sent as search queries to the filelist.io API to check for new torrents.</li>
+        <li><strong>Credentials</strong> (username + passkey) are sent to filelist.io to authenticate API requests.</li>
+        <li><strong>Seen torrent IDs</strong> are compared locally to avoid duplicate notifications.</li>
+    </ul>
+
+    <h2>Data sharing</h2>
+    <p>The extension does <strong>not</strong>:</p>
+    <ul>
+        <li>Send any data to third-party servers, analytics services, or tracking platforms</li>
+        <li>Collect or transmit browsing history, personal information, or usage statistics</li>
+        <li>Use cookies, fingerprinting, or any form of user tracking</li>
+        <li>Communicate with any server other than filelist.io</li>
+    </ul>
+
+    <h2>Data storage</h2>
+    <p>All data is stored locally in your browser using the Web Extensions storage API. No data leaves your device except for API requests to filelist.io.</p>
+    <p>Uninstalling the extension removes all stored data.</p>
+
+    <h2>Permissions</h2>
+    <table>
+        <thead>
+            <tr><th>Permission</th><th>Reason</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>storage</code></td><td>Store series list, credentials, and seen torrents locally</td></tr>
+            <tr><td><code>alarms</code></td><td>Schedule periodic polling</td></tr>
+            <tr><td><code>notifications</code></td><td>Show desktop notifications for new torrents</td></tr>
+            <tr><td>Host (filelist.io)</td><td>Fetch search results and auto-discover credentials</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Changes</h2>
+    <p>Updates to this policy will be reflected in this document. The date below indicates the last revision.</p>
+    <p><em>Last updated: April 11, 2026</em></p>
+</div>
+
+<footer>
+    <a href="./">Home</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/dustfeather/filelist-ext">GitHub</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/dustfeather/filelist-ext/blob/main/LICENSE">GPL-3.0</a>
+</footer>
+
+</body>
+</html>
