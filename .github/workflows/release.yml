@@ -74,6 +74,15 @@ jobs:
             - name: Package Firefox extension
               run: cd dist && zip -r ../filelist-tv-monitor-firefox-${{ steps.version.outputs.tag }}.xpi .
 
+            - name: Generate release notes
+              run: |
+                  PREV_TAG=$(git tag --list 'v*' --sort=-v:refname | head -n1)
+                  if [ -n "$PREV_TAG" ]; then
+                    git log "${PREV_TAG}..HEAD" --pretty=format:"- %s" > release-notes.txt
+                  else
+                    echo "- Initial release" > release-notes.txt
+                  fi
+
             - name: Package source code for AMO review
               run: git archive --format=zip --prefix=source/ -o source-${{ steps.version.outputs.tag }}.zip HEAD
 
@@ -94,6 +103,7 @@ jobs:
                       filelist-tv-monitor-chrome-${{ steps.version.outputs.tag }}.zip
                       filelist-tv-monitor-firefox-${{ steps.version.outputs.tag }}.xpi
                       source-${{ steps.version.outputs.tag }}.zip
+                      release-notes.txt
 
     publish-chrome:
         needs: build
@@ -189,16 +199,34 @@ jobs:
                     "
                   }
 
+                  # Retry wrapper for 429 rate limits (up to 3 attempts)
+                  amo_curl() {
+                    for attempt in 1 2 3; do
+                      JWT=$(generate_jwt)
+                      RESPONSE=$(curl -s -w "\n%{http_code}" -H "Authorization: JWT $JWT" "$@")
+                      HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+                      if [ "$HTTP_CODE" = "429" ]; then
+                        RETRY_AFTER=$(echo "$RESPONSE" | sed '$d' | jq -r '.retry_after // 30')
+                        echo "Rate limited (429), retrying in ${RETRY_AFTER}s (attempt $attempt/3)"
+                        sleep "$RETRY_AFTER"
+                      else
+                        echo "$RESPONSE"
+                        return 0
+                      fi
+                    done
+                    echo "$RESPONSE"
+                    return 1
+                  }
+
                   AMO_BASE="https://addons.mozilla.org/api/v5"
                   ADDON_ID="filelist-tv-monitor@extension"
 
                   # Upload .xpi
-                  JWT=$(generate_jwt)
-                  UPLOAD_RESPONSE=$(curl -s \
-                    -H "Authorization: JWT $JWT" \
+                  UPLOAD_RESPONSE=$(amo_curl \
                     -F "upload=@filelist-tv-monitor-firefox-${{ needs.build.outputs.tag }}.xpi" \
                     -F "channel=listed" \
                     "$AMO_BASE/addons/upload/")
+                  UPLOAD_RESPONSE=$(echo "$UPLOAD_RESPONSE" | sed '$d')
 
                   UPLOAD_UUID=$(echo "$UPLOAD_RESPONSE" | jq -r '.uuid')
                   echo "Upload UUID: $UPLOAD_UUID"
@@ -212,11 +240,8 @@ jobs:
                   PROCESSED="false"
                   for i in $(seq 1 60); do
                     sleep 10
-                    JWT=$(generate_jwt)
-
-                    STATUS=$(curl -s \
-                      -H "Authorization: JWT $JWT" \
-                      "$AMO_BASE/addons/upload/$UPLOAD_UUID/")
+                    POLL_RESPONSE=$(amo_curl "$AMO_BASE/addons/upload/$UPLOAD_UUID/")
+                    STATUS=$(echo "$POLL_RESPONSE" | sed '$d')
 
                     PROCESSED=$(echo "$STATUS" | jq -r '.processed')
                     VALID=$(echo "$STATUS" | jq -r '.valid')
@@ -240,17 +265,13 @@ jobs:
                   fi
 
                   # Create new version with source code and release notes
-                  RELEASE_NOTES=$(curl -s \
-                    -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                    "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ needs.build.outputs.tag }}" \
-                    | jq -r '.body // "Bug fixes and improvements."')
+                  NOTES=$(cat release-notes.txt)
+                  RELEASE_NOTES=$(jq -n --arg notes "$NOTES" '{"en-US": $notes}')
 
-                  JWT=$(generate_jwt)
-                  VERSION_RESPONSE=$(curl -s -w "\n%{http_code}" \
-                    -H "Authorization: JWT $JWT" \
+                  VERSION_RESPONSE=$(amo_curl \
                     -F "upload=$UPLOAD_UUID" \
                     -F "source=@source-${{ needs.build.outputs.tag }}.zip" \
-                    -F "release_notes={\"en-US\": $(echo "$RELEASE_NOTES" | jq -Rs .)}" \
+                    -F "release_notes=$RELEASE_NOTES" \
                     "$AMO_BASE/addons/addon/$ADDON_ID/versions/")
 
                   HTTP_CODE=$(echo "$VERSION_RESPONSE" | tail -1)
