@@ -15,8 +15,11 @@ env:
     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-    release:
+    build:
         runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.version.outputs.version }}
+            tag: ${{ steps.version.outputs.tag }}
         steps:
             - uses: actions/checkout@v6
               with:
@@ -80,10 +83,43 @@ jobs:
                       filelist-tv-monitor-chrome-${{ steps.version.outputs.tag }}.zip
                       filelist-tv-monitor-firefox-${{ steps.version.outputs.tag }}.xpi
 
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: extensions
+                  path: |
+                      filelist-tv-monitor-chrome-${{ steps.version.outputs.tag }}.zip
+                      filelist-tv-monitor-firefox-${{ steps.version.outputs.tag }}.xpi
+
+    publish-chrome:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/download-artifact@v4
+              with:
+                  name: extensions
+
             - name: Upload to Chrome Web Store
-              run: npx -y chrome-webstore-upload-cli@3 upload --auto-publish --source filelist-tv-monitor-chrome-${{ steps.version.outputs.tag }}.zip
+              run: npx -y chrome-webstore-upload-cli@3 upload --auto-publish --source filelist-tv-monitor-chrome-${{ needs.build.outputs.tag }}.zip
               env:
                   EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
                   CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
                   CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
                   REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+
+    publish-firefox:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/download-artifact@v4
+              with:
+                  name: extensions
+
+            - name: Upload to Firefox Add-ons
+              uses: kewisch/action-web-ext@v1
+              with:
+                  cmd: sign
+                  source: filelist-tv-monitor-firefox-${{ needs.build.outputs.tag }}.xpi
+                  channel: listed
+                  apiKey: ${{ secrets.AMO_JWT_ISSUER }}
+                  apiSecret: ${{ secrets.AMO_JWT_SECRET }}
