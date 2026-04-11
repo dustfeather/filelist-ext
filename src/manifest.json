@@ -14,7 +14,6 @@
     ],
     "background": {
         "service_worker": "src/background/service-worker.ts",
-        "scripts": ["src/background/service-worker.ts"],
         "type": "module"
     },
     "action": {
@@ -34,7 +33,8 @@
         "gecko": {
             "id": "filelist-tv-monitor@extension",
             "data_collection_permissions": {
-                "data_collected": false
+                "data_collected": false,
+                "required": false
             }
         }
     }
