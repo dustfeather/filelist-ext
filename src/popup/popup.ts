@@ -30,7 +30,7 @@ function updateFormState(count: number) {
 }
 
 async function renderSeries(series: Series[]) {
-    listEl.innerHTML = "";
+    listEl.textContent = "";
     emptyEl.classList.toggle("hidden", series.length > 0);
     updateFormState(series.length);
     const seen = await storage.getSeenTorrents();
@@ -39,27 +39,41 @@ async function renderSeries(series: Series[]) {
         const found = Object.keys(seen[key] ?? {}).length > 0;
         const card = document.createElement("div");
         card.className = "series-card";
-        card.innerHTML = `
-            <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full flex-shrink-0 ${found ? "bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.5)]" : "bg-red-400 shadow-[0_0_6px_rgba(248,113,113,0.5)]"}"></span>
-                <span class="series-name text-sm text-white/80 cursor-pointer hover:text-white" title="Click to edit">${escapeHtml(s.name)}</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <button class="search-btn px-1.5 py-0.5 rounded text-[10px] bg-surface text-white/30 hover:text-white/50 transition-colors"
-                    title="Search on filelist.io">🔍</button>
-                <button class="strict-btn px-1.5 py-0.5 rounded text-[10px] transition-colors
-                    ${s.strict ? "bg-accent/30 text-accent" : "bg-surface text-white/30 hover:text-white/50"}"
-                    data-name="${escapeHtml(s.name)}" title="Strict: season packs only">S</button>
-                <button class="remove-btn" data-name="${escapeHtml(s.name)}">×</button>
-            </div>
-        `;
-        card.querySelector(".remove-btn")!.addEventListener("click", () => removeSeries(s.name));
-        card.querySelector(".strict-btn")!.addEventListener("click", () => toggleStrict(s.name));
-        card.querySelector(".search-btn")!.addEventListener("click", () => {
+        const leftDiv = document.createElement("div");
+        leftDiv.className = "flex items-center gap-2";
+        const dot = document.createElement("span");
+        dot.className = `w-2 h-2 rounded-full flex-shrink-0 ${found ? "bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.5)]" : "bg-red-400 shadow-[0_0_6px_rgba(248,113,113,0.5)]"}`;
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "series-name text-sm text-white/80 cursor-pointer hover:text-white";
+        nameSpan.title = "Click to edit";
+        nameSpan.textContent = s.name;
+        leftDiv.append(dot, nameSpan);
+
+        const rightDiv = document.createElement("div");
+        rightDiv.className = "flex items-center gap-1.5";
+        const searchBtn = document.createElement("button");
+        searchBtn.className = "search-btn px-1.5 py-0.5 rounded text-[10px] bg-surface text-white/30 hover:text-white/50 transition-colors";
+        searchBtn.title = "Search on filelist.io";
+        searchBtn.textContent = "\u{1F50D}";
+        const strictBtn = document.createElement("button");
+        strictBtn.className = `strict-btn px-1.5 py-0.5 rounded text-[10px] transition-colors ${s.strict ? "bg-accent/30 text-accent" : "bg-surface text-white/30 hover:text-white/50"}`;
+        strictBtn.dataset.name = s.name;
+        strictBtn.title = "Strict: season packs only";
+        strictBtn.textContent = "S";
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-btn";
+        removeBtn.dataset.name = s.name;
+        removeBtn.textContent = "\u00D7";
+        rightDiv.append(searchBtn, strictBtn, removeBtn);
+
+        card.append(leftDiv, rightDiv);
+        removeBtn.addEventListener("click", () => removeSeries(s.name));
+        strictBtn.addEventListener("click", () => toggleStrict(s.name));
+        searchBtn.addEventListener("click", () => {
             const q = s.name.replace(/\s+/g, "+");
             chrome.tabs.create({ url: `https://filelist.io/browse.php?search=${q}&cat=21&searchin=0&sort=2` });
         });
-        card.querySelector(".series-name")!.addEventListener("click", (e) => {
+        nameSpan.addEventListener("click", (e) => {
             const span = e.currentTarget as HTMLSpanElement;
             const input = document.createElement("input");
             input.type = "text";
@@ -85,10 +99,6 @@ async function renderSeries(series: Series[]) {
         });
         listEl.appendChild(card);
     }
-}
-
-function escapeHtml(s: string) {
-    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 const MAX_SERIES = 150;
