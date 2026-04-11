@@ -23,7 +23,7 @@ Credentials (username + passkey) are auto-discovered from your active filelist.i
 
 ### Firefox
 
-Download the `.xpi` from the [latest release](https://github.com/dustfeather/filelist-ext/releases/latest), then go to `about:addons` and install from file.
+[Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/filelist-monitor/)
 
 ### Build from source
 
