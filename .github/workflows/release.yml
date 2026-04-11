@@ -239,12 +239,18 @@ jobs:
                     exit 1
                   fi
 
-                  # Create new version with source code for review
+                  # Create new version with source code and release notes
+                  RELEASE_NOTES=$(curl -s \
+                    -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                    "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ needs.build.outputs.tag }}" \
+                    | jq -r '.body // "Bug fixes and improvements."')
+
                   JWT=$(generate_jwt)
                   VERSION_RESPONSE=$(curl -s -w "\n%{http_code}" \
                     -H "Authorization: JWT $JWT" \
                     -F "upload=$UPLOAD_UUID" \
                     -F "source=@source-${{ needs.build.outputs.tag }}.zip" \
+                    -F "release_notes={\"en-US\": $(echo "$RELEASE_NOTES" | jq -Rs .)}" \
                     "$AMO_BASE/addons/addon/$ADDON_ID/versions/")
 
                   HTTP_CODE=$(echo "$VERSION_RESPONSE" | tail -1)
