@@ -27,12 +27,14 @@ Download the `.xpi` from the [latest release](https://github.com/dustfeather/fil
 
 ### Build from source
 
+Requires [Node.js](https://nodejs.org/) >= 22 and [pnpm](https://pnpm.io/) >= 9. Works on Linux, macOS, and Windows.
+
 ```bash
 pnpm install
 pnpm run build
 ```
 
-Then load the `dist/` directory as an unpacked extension (Chrome) or temporary add-on (Firefox).
+The built extension is in the `dist/` directory. Load it as an unpacked extension in Chrome or temporary add-on in Firefox.
 
 ## Configuration
 
