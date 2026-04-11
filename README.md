@@ -17,11 +17,13 @@ Credentials (username + passkey) are auto-discovered from your active filelist.i
 
 ## Install
 
-### From GitHub Releases
+### Chrome
 
-Download the latest release:
-- **Chrome**: `.zip` file → go to `chrome://extensions`, enable Developer Mode, drag & drop the zip
-- **Firefox**: `.xpi` file → go to `about:addons`, install from file
+[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/filelist-monitor/fkklofnmhjhifmnkhgjplkkkpjoajdhj)
+
+### Firefox
+
+Download the `.xpi` from the [latest release](https://github.com/dustfeather/filelist-ext/releases/latest), then go to `about:addons` and install from file.
 
 ### Build from source
 
