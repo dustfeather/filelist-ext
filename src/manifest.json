@@ -32,9 +32,13 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "filelist-tv-monitor@extension",
+            "strict_min_version": "149.0",
             "data_collection_permissions": {
                 "required": ["none"]
             }
+        },
+        "gecko_android": {
+            "strict_min_version": "149.0"
         }
     }
 }
