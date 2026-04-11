@@ -121,6 +121,5 @@ jobs:
                   cmd: sign
                   source: filelist-tv-monitor-firefox-${{ needs.build.outputs.tag }}.xpi
                   channel: listed
-                  timeout: 0
                   apiKey: ${{ secrets.AMO_JWT_ISSUER }}
                   apiSecret: ${{ secrets.AMO_JWT_SECRET }}
