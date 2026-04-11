@@ -74,6 +74,9 @@ jobs:
             - name: Package Firefox extension
               run: cd dist && zip -r ../filelist-tv-monitor-firefox-${{ steps.version.outputs.tag }}.xpi .
 
+            - name: Package source code for AMO review
+              run: git archive --format=zip --prefix=source/ -o source-${{ steps.version.outputs.tag }}.zip HEAD
+
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
@@ -90,6 +93,7 @@ jobs:
                   path: |
                       filelist-tv-monitor-chrome-${{ steps.version.outputs.tag }}.zip
                       filelist-tv-monitor-firefox-${{ steps.version.outputs.tag }}.xpi
+                      source-${{ steps.version.outputs.tag }}.zip
 
     publish-chrome:
         needs: build
@@ -120,6 +124,7 @@ jobs:
               with:
                   cmd: sign
                   source: filelist-tv-monitor-firefox-${{ needs.build.outputs.tag }}.xpi
+                  sourceCode: source-${{ needs.build.outputs.tag }}.zip
                   channel: listed
                   apiKey: ${{ secrets.AMO_JWT_ISSUER }}
                   apiSecret: ${{ secrets.AMO_JWT_SECRET }}
