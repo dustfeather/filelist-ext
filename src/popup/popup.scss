@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+// ─── M3 Design Tokens ──────────────────────────────────────────────
+
+@theme {
+    // Color — Dark scheme, Indigo seed
+    --color-primary: #bec2ff;
+    --color-on-primary: #0b1580;
+    --color-primary-container: #2f3898;
+    --color-on-primary-container: #e0e0ff;
+    --color-secondary-container: #444559;
+    --color-on-secondary-container: #e1e0f9;
+    --color-tertiary: #e8b9d4;
+    --color-tertiary-container: #5d3d53;
+    --color-on-tertiary-container: #ffd8ee;
+    --color-error: #ffb4ab;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffdad6;
+    --color-surface: #131318;
+    --color-on-surface: #e4e1e9;
+    --color-on-surface-variant: #c7c5d0;
+    --color-surface-container-lowest: #0e0e13;
+    --color-surface-container-low: #1b1b21;
+    --color-surface-container: #1f1f25;
+    --color-surface-container-high: #2a2a30;
+    --color-surface-container-highest: #35343b;
+    --color-outline: #91909a;
+    --color-outline-variant: #46464f;
+
+    // Type scale
+    --font-size-title-lg: 1.375rem;
+    --font-size-body-lg: 1rem;
+    --font-size-body-md: 0.875rem;
+    --font-size-label-lg: 0.875rem;
+    --font-size-label-md: 0.75rem;
+    --line-height-title-lg: 1.75rem;
+    --line-height-body-lg: 1.5rem;
+    --line-height-body-md: 1.25rem;
+    --line-height-label-lg: 1.25rem;
+    --line-height-label-md: 1rem;
+}
+
+// ─── M3 Motion ─────────────────────────────────────────────────────
+
+$ease-standard: cubic-bezier(0.2, 0, 0, 1);
+$ease-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+$ease-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+$duration-short: 200ms;
+$duration-medium: 300ms;
+$duration-long: 400ms;
+
+// ─── M3 State layer ────────────────────────────────────────────────
+
+@mixin state-layer($color, $opacity: 8%) {
+    background: color-mix(in srgb, $color $opacity, transparent);
+}
+
+// ─── Base ──────────────────────────────────────────────────────────
+
+body {
+    background: var(--color-surface);
+}
+
+// ─── Series list item ──────────────────────────────────────────────
+
+.series-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--color-surface-container);
+    transition: background $duration-short $ease-standard;
+    animation: slideIn $duration-long $ease-decelerate;
+
+    &:hover {
+        background: var(--color-surface-container-high);
+    }
+
+    .remove-btn {
+        width: 1.75rem;
+        height: 1.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        color: color-mix(in srgb, var(--color-on-surface-variant) 50%, transparent);
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        transition: color $duration-short $ease-standard,
+                    background $duration-short $ease-standard;
+
+        &:hover {
+            color: var(--color-error);
+            @include state-layer(var(--color-error));
+        }
+    }
+}
+
+// ─── Icon button (standard) ────────────────────────────────────────
+
+.icon-btn {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: var(--color-on-surface-variant);
+    flex-shrink: 0;
+    transition: color $duration-short $ease-standard,
+                background $duration-short $ease-standard;
+
+    &:hover {
+        @include state-layer(var(--color-on-surface-variant));
+    }
+
+    &.active {
+        background: var(--color-primary-container);
+        color: var(--color-on-primary-container);
+    }
+}
+
+// ─── Outlined text field with floating label ───────────────────────
+
+.text-field-wrap {
+    position: relative;
+}
+
+.text-field {
+    width: 100%;
+    padding: 1.25rem 0.75rem 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--color-surface-container-high);
+    color: var(--color-on-surface);
+    border: 1px solid var(--color-outline-variant);
+    outline: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: var(--font-size-body-md);
+    line-height: var(--line-height-body-md);
+    transition: border-color $duration-short $ease-standard,
+                box-shadow $duration-short $ease-standard;
+
+    &:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 1px var(--color-primary);
+    }
+}
+
+.text-field-label {
+    position: absolute;
+    left: 0.75rem;
+    color: var(--color-on-surface-variant);
+    pointer-events: none;
+    font-size: var(--font-size-body-md);
+    top: 50%;
+    transform: translateY(-50%);
+    transition: top $duration-short $ease-decelerate,
+                transform $duration-short $ease-decelerate,
+                font-size $duration-short $ease-decelerate,
+                color $duration-short $ease-standard;
+
+    .text-field:focus ~ &,
+    .text-field:not(:placeholder-shown) ~ & {
+        top: 6px;
+        transform: translateY(0);
+        font-size: var(--font-size-label-md);
+        line-height: var(--line-height-label-md);
+    }
+
+    .text-field:focus ~ & {
+        color: var(--color-primary);
+    }
+}
+
+// ─── Animations ────────────────────────────────────────────────────
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}

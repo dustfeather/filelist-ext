@@ -15,18 +15,14 @@ const statusDot = document.getElementById("status-dot") as HTMLSpanElement;
 let addStrict = false;
 strictToggle.addEventListener("click", () => {
     addStrict = !addStrict;
-    strictToggle.classList.toggle("bg-accent/30", addStrict);
-    strictToggle.classList.toggle("text-accent", addStrict);
-    strictToggle.classList.toggle("text-white/30", !addStrict);
-    strictToggle.classList.toggle("border-accent", addStrict);
-    strictToggle.classList.toggle("border-surface-border", !addStrict);
+    strictToggle.classList.toggle("active", addStrict);
 });
 
 function updateFormState(count: number) {
     const atLimit = count >= MAX_SERIES;
     input.disabled = atLimit;
     addBtn.disabled = atLimit;
-    input.placeholder = atLimit ? `Limit reached (${MAX_SERIES})` : "Series name...";
+    input.placeholder = atLimit ? `Limit reached (${MAX_SERIES})` : "Add series...";
 }
 
 async function renderSeries(series: Series[]) {
@@ -37,36 +33,39 @@ async function renderSeries(series: Series[]) {
     for (const s of series) {
         const key = s.name.toLowerCase();
         const found = Object.keys(seen[key] ?? {}).length > 0;
-        const card = document.createElement("div");
-        card.className = "series-card";
+        const item = document.createElement("div");
+        item.className = "series-item";
         const leftDiv = document.createElement("div");
-        leftDiv.className = "flex items-center gap-2";
+        leftDiv.className = "flex items-center gap-2.5 min-w-0";
         const dot = document.createElement("span");
-        dot.className = `w-2 h-2 rounded-full flex-shrink-0 ${found ? "bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.5)]" : "bg-red-400 shadow-[0_0_6px_rgba(248,113,113,0.5)]"}`;
+        dot.className = `w-2 h-2 rounded-full shrink-0 ${found ? "bg-primary" : "bg-outline-variant"}`;
         const nameSpan = document.createElement("span");
-        nameSpan.className = "series-name text-sm text-white/80 cursor-pointer hover:text-white";
+        nameSpan.className = "text-[length:--font-size-body-md] leading-[--line-height-body-md] text-on-surface cursor-pointer hover:text-primary truncate";
         nameSpan.title = "Click to edit";
         nameSpan.textContent = s.name;
         leftDiv.append(dot, nameSpan);
 
         const rightDiv = document.createElement("div");
-        rightDiv.className = "flex items-center gap-1.5";
+        rightDiv.className = "flex items-center gap-0.5 shrink-0";
         const searchBtn = document.createElement("button");
-        searchBtn.className = "search-btn px-1.5 py-0.5 rounded text-[10px] bg-surface text-white/30 hover:text-white/50 transition-colors";
+        searchBtn.className = "icon-btn text-xs";
         searchBtn.title = "Search on filelist.io";
+        searchBtn.ariaLabel = "Search on filelist.io";
         searchBtn.textContent = "\u{1F50D}";
         const strictBtn = document.createElement("button");
-        strictBtn.className = `strict-btn px-1.5 py-0.5 rounded text-[10px] transition-colors ${s.strict ? "bg-accent/30 text-accent" : "bg-surface text-white/30 hover:text-white/50"}`;
+        strictBtn.className = `icon-btn text-xs ${s.strict ? "active" : ""}`;
         strictBtn.dataset.name = s.name;
         strictBtn.title = "Strict: season packs only";
+        strictBtn.ariaLabel = `Strict mode ${s.strict ? "on" : "off"}`;
         strictBtn.textContent = "S";
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-btn";
         removeBtn.dataset.name = s.name;
+        removeBtn.ariaLabel = `Remove ${s.name}`;
         removeBtn.textContent = "\u00D7";
         rightDiv.append(searchBtn, strictBtn, removeBtn);
 
-        card.append(leftDiv, rightDiv);
+        item.append(leftDiv, rightDiv);
         removeBtn.addEventListener("click", () => removeSeries(s.name));
         strictBtn.addEventListener("click", () => toggleStrict(s.name));
         searchBtn.addEventListener("click", () => {
@@ -78,7 +77,7 @@ async function renderSeries(series: Series[]) {
             const input = document.createElement("input");
             input.type = "text";
             input.value = s.name;
-            input.className = "bg-transparent text-sm text-white outline-none border-b border-accent w-full";
+            input.className = "bg-transparent text-[length:--font-size-body-md] text-on-surface outline-none border-b-2 border-primary w-full";
             span.replaceWith(input);
             input.focus();
             input.select();
@@ -97,7 +96,7 @@ async function renderSeries(series: Series[]) {
                 if (ev.key === "Escape") { input.value = s.name; input.blur(); }
             });
         });
-        listEl.appendChild(card);
+        listEl.appendChild(item);
     }
 }
 
@@ -149,7 +148,7 @@ async function updateLastCheck() {
     if (ts > 0) {
         const ago = Math.round((Date.now() - ts) / 60000);
         lastCheckEl.textContent = ago < 1 ? "just now" : `${ago}m ago`;
-        statusDot.classList.replace("bg-white/20", "bg-green-400");
+        statusDot.classList.replace("bg-outline-variant", "bg-primary");
     }
 }
 
