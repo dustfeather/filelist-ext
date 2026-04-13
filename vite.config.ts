@@ -1,6 +1,5 @@
 import { defineConfig, Plugin } from "vite";
 import { crx } from "@crxjs/vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs";
 import path from "node:path";
 import manifest from "./src/manifest.json";
@@ -21,7 +20,7 @@ function firefoxBackgroundScripts(): Plugin {
 }
 
 export default defineConfig({
-    plugins: [crx({ manifest }), tailwindcss(), firefoxBackgroundScripts()],
+    plugins: [crx({ manifest }), firefoxBackgroundScripts()],
     build: {
         outDir: "dist",
     },
