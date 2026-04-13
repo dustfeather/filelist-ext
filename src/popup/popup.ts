@@ -9,6 +9,7 @@ const usernameInput = document.getElementById("username-input") as HTMLInputElem
 const passkeyInput = document.getElementById("passkey-input") as HTMLInputElement;
 const saveCredsBtn = document.getElementById("save-creds") as HTMLButtonElement;
 const strictToggle = document.getElementById("strict-toggle") as HTMLButtonElement;
+
 const lastCheckEl = document.getElementById("last-check") as HTMLSpanElement;
 const statusDot = document.getElementById("status-dot") as HTMLSpanElement;
 

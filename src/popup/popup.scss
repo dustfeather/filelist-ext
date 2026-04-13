@@ -121,6 +121,18 @@ body {
     }
 }
 
+// M3 outlined icon button — visible border in rest state
+.icon-btn-outlined {
+    @extend .icon-btn;
+    border: 1px solid var(--color-outline-variant);
+
+    &.active {
+        background: var(--color-primary-container);
+        color: var(--color-on-primary-container);
+        border-color: transparent;
+    }
+}
+
 // ─── Outlined text field with floating label ───────────────────────
 
 .text-field-wrap {
