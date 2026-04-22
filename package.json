@@ -9,7 +9,7 @@
     },
     "devDependencies": {
         "@crxjs/vite-plugin": "^2.4.0",
-        "@tailwindcss/postcss": "^4.2.2",
+        "@tailwindcss/postcss": "^4.2.4",
         "@types/chrome": "^0.1.40",
         "sass": "^1.99.0",
         "tailwindcss": "^4.2.1",
