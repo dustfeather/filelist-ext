@@ -107,14 +107,14 @@ jobs:
 
     publish-chrome:
         needs: build
-        uses: dustfeather/extension-workflows/.github/workflows/publish-chrome.yml@v1
+        uses: dustfeather/shared-workflows/.github/workflows/publish-chrome.yml@v1
         with:
             zip-name: filelist-tv-monitor-chrome-${{ needs.build.outputs.tag }}.zip
         secrets: inherit
 
     publish-firefox:
         needs: build
-        uses: dustfeather/extension-workflows/.github/workflows/publish-firefox.yml@v1
+        uses: dustfeather/shared-workflows/.github/workflows/publish-firefox.yml@v1
         with:
             xpi-name: filelist-tv-monitor-firefox-${{ needs.build.outputs.tag }}.xpi
             source-name: source-${{ needs.build.outputs.tag }}.zip
