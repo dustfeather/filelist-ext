@@ -2,7 +2,7 @@ name: PR checks
 
 on:
     pull_request:
-        types: [opened, synchronize]
+        types: [opened, synchronize, reopened]
         # Self-modify validation guard: only ignore THIS file (narrow), not the
         # broader .github/** tree, so other workflow PRs still get reviewed.
         paths-ignore:
