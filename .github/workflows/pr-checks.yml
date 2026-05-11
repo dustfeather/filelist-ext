@@ -2,7 +2,7 @@ name: PR checks
 
 on:
     pull_request:
-        types: [opened, synchronize, reopened]
+        types: [opened, synchronize, reopened, closed]
         # Self-modify validation guard: only ignore THIS file (narrow), not the
         # broader .github/** tree, so other workflow PRs still get reviewed.
         paths-ignore:
@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
     tests:
+        if: github.event.action != 'closed'
         permissions:
             contents: read
         uses: dustfeather/shared-workflows/.github/workflows/node-test.yml@v1
@@ -24,6 +25,7 @@ jobs:
             run-build: true
 
     review:
+        if: github.event.action != 'closed'
         needs: tests
         permissions:
             contents: read
