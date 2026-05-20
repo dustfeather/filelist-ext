@@ -25,3 +25,11 @@ its JSON API and fires browser notifications for new results.
   storage track progress so a service-worker restart resumes mid-cycle.
 - Popup "Poll Now" sends `poll-now`, triggering a full immediate poll of all series.
 - Series with no new results for 30 days are auto-removed.
+
+## Project facts
+
+- Package manager is pnpm (not npm/yarn).
+- Chrome Web Store listing: chromewebstore.google.com/detail/filelist-monitor/fkklofnmhjhifmnkhgjplkkkpjoajdhj (extension ID `fkklofnmhjhifmnkhgjplkkkpjoajdhj`).
+- CWS publish secrets: `CHROME_CLIENT_ID`, `CHROME_CLIENT_SECRET`, `CHROME_EXTENSION_ID`, `CHROME_REFRESH_TOKEN`.
+- AMO publish secrets: `AMO_JWT_ISSUER`, `AMO_JWT_SECRET`.
+- `release.yml` sets `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true` — needed until `softprops/action-gh-release` ships v3.
