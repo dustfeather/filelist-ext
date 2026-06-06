@@ -18,7 +18,7 @@ jobs:
     tests:
         permissions:
             contents: read
-        uses: dustfeather/shared-workflows/.github/workflows/node-test.yml@v2
+        uses: dustfeather/shared-workflows/.github/workflows/node-test.yml@v3
         with:
           runner: arc-df-filelist-ext
 
@@ -115,7 +115,7 @@ jobs:
 
     publish-chrome:
         needs: build
-        uses: dustfeather/shared-workflows/.github/workflows/publish-chrome.yml@v2
+        uses: dustfeather/shared-workflows/.github/workflows/publish-chrome.yml@v3
         with:
             runner: arc-df-filelist-ext
             zip-name: filelist-tv-monitor-chrome-${{ needs.build.outputs.tag }}.zip
@@ -123,7 +123,7 @@ jobs:
 
     publish-firefox:
         needs: build
-        uses: dustfeather/shared-workflows/.github/workflows/publish-firefox.yml@v2
+        uses: dustfeather/shared-workflows/.github/workflows/publish-firefox.yml@v3
         with:
             runner: arc-df-filelist-ext
             xpi-name: filelist-tv-monitor-firefox-${{ needs.build.outputs.tag }}.xpi
