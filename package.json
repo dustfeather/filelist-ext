@@ -12,7 +12,7 @@
     "devDependencies": {
         "@crxjs/vite-plugin": "^2.6.1",
         "@tailwindcss/postcss": "^4.3.1",
-        "@types/chrome": "^0.1.42",
+        "@types/chrome": "^0.1.43",
         "sass": "^1.100.0",
         "tailwindcss": "^4.3.0",
         "typescript": "^6.0.3",
