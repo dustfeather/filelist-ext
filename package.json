@@ -5,7 +5,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build"
+        "build": "tsc && vite build",
+        "typecheck": "tsc --noEmit",
+        "prepare": "git config core.hooksPath .githooks || true"
     },
     "devDependencies": {
         "@crxjs/vite-plugin": "^2.4.0",
