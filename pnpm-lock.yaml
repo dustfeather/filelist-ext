@@ -13,7 +13,7 @@ importers:
     devDependencies:
       '@crxjs/vite-plugin':
         specifier: ^2.7.1
-        version: 2.7.1(vite@8.1.4(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0))
+        version: 2.7.1(vite@8.1.5(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0))
       '@tailwindcss/postcss':
         specifier: ^4.3.2
         version: 4.3.2
@@ -30,8 +30,8 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       vite:
-        specifier: ^8.1.4
-        version: 8.1.4(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0)
+        specifier: ^8.1.5
+        version: 8.1.5(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0)
 
 packages:
 
@@ -711,6 +711,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@3.3.16:
+    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
@@ -734,8 +739,8 @@ packages:
     resolution: {integrity: sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.5.17:
-    resolution: {integrity: sha512-J7EF+8X+CzRPaJPOv9Ck2wNWJvGnnl3PcNPAdGg6GTLjyVpyQ0yATMSXRFRV01BviT/9Gwuc3rjEyJbDJG9a4w==}
+  postcss@8.5.19:
+    resolution: {integrity: sha512-Mz8SaolMd8nB+G13WkORcxQKHZ/NE4xXevtkJHVuG+guo9/wYKlIMTKAqGdEmYOXR2ijPjTYNHssizdaVSUNdQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   readdirp@5.0.0:
@@ -787,8 +792,8 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  vite@8.1.4:
-    resolution: {integrity: sha512-bTT9PsdWO+MQMNG9ZXIP/qM9wGh37DFxTV/sPq9cFpHr3w4jkgef032PkAL9jAqhk3Nz8NQw3O8n6/xFkqO4QQ==}
+  vite@8.1.5:
+    resolution: {integrity: sha512-7ULLwsCdYx/nRyrpiEwvqb5TFHrMVZyBt+rg/OAXT7rgj/z+DtTDyKFeLAdDkubDVDKD8jOsndmy7m55XcfUsw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -834,7 +839,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@crxjs/vite-plugin@2.7.1(vite@8.1.4(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0))':
+  '@crxjs/vite-plugin@2.7.1(vite@8.1.5(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0))':
     dependencies:
       '@webcomponents/custom-elements': 1.6.0
       acorn-walk: 8.3.5
@@ -850,7 +855,7 @@ snapshots:
       rollup: 2.80.0
       rxjs: 7.5.7
       tinyglobby: 0.2.17
-      vite: 8.1.4(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0)
+      vite: 8.1.5(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -1358,6 +1363,8 @@ snapshots:
 
   nanoid@3.3.15: {}
 
+  nanoid@3.3.16: {}
+
   node-addon-api@7.1.1:
     optional: true
 
@@ -1382,9 +1389,9 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  postcss@8.5.17:
+  postcss@8.5.19:
     dependencies:
-      nanoid: 3.3.15
+      nanoid: 3.3.16
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -1444,11 +1451,11 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  vite@8.1.4(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0):
+  vite@8.1.5(esbuild@0.27.2)(jiti@2.7.0)(sass@1.100.0):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.5
-      postcss: 8.5.17
+      postcss: 8.5.19
       rolldown: 1.1.5
       tinyglobby: 0.2.17
     optionalDependencies:
