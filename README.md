@@ -1,5 +1,7 @@
 # FileList Monitor
 
+[![Release](https://github.com/dustfeather/filelist-ext/actions/workflows/release.yml/badge.svg)](https://github.com/dustfeather/filelist-ext/actions/workflows/release.yml)
+
 Browser extension (Chrome & Firefox) that tracks TV series on [filelist.io](https://filelist.io) and sends desktop notifications when new torrents appear.
 
 ![FileList Monitor](filelist-monitor.png)
