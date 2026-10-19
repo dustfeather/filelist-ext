@@ -15,6 +15,7 @@ jobs:
     release:
         uses: dustfeather/shared-workflows/.github/workflows/release-extension.yml@v8
         with:
+            runner: arc-df-filelist-ext
             targets: '["chrome","firefox"]'
             addon-id: filelist-tv-monitor@extension
         secrets: inherit
